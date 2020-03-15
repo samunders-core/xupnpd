@@ -12,7 +12,7 @@ before() {
 }
 
 xupnpd() {	# unbuffered IO eases failing test debugging
-  stdbuf -i 0 -o 0 -e 0 "$SRC_DIR/xupnpd" "$@"
+  stdbuf -i 0 -o 0 -e 0 "$SRC_DIR/xupnpd-${PLATFORM:-x86}" "$@"
 }
 
 lookup() {	# regex; like grep, but prints first match on success, everything when failed
@@ -25,7 +25,7 @@ http() {	# /url_path?query [curl args]
 }
 
 after() {
-  pkill xupnpd || true		# $! is empty :-(; true prevents failure on synchronous tests
+  pkill "xupnpd-${PLATFORM:-x86}" || true		# $! is empty :-(; true prevents failure on synchronous tests
   TMP_DIR=`dirs +0`
   popd
   rm -r "$TMP_DIR"
